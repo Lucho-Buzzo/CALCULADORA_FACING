@@ -1,0 +1,73 @@
+
+<!DOCTYPE html><html><head>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Calculadora Facing</title>
+<style>
+body{font-family:Arial;background:#0f172a;color:#fff;padding:20px;text-align:center;}
+.logo{margin-top:40px;margin-bottom:10px;}
+.logo img{max-width:220px;height:auto;}
+h1{margin-bottom:10px;}
+.container{margin-top:10px;text-align:left;background:#1e293b;padding:15px;border-radius:8px;}
+label{font-size:16px;font-weight:bold;}
+.sub{font-size:12px;color:#94a3b8;margin-bottom:6px;}
+input{width:100%;padding:8px;margin-bottom:10px;border-radius:4px;border:none;}
+button{padding:10px 20px;border:none;border-radius:6px;margin:6px 0;}
+.calc{background:#10b981;color:#fff;}
+.reset{background:#ef4444;color:#fff;}
+.result{margin-top:15px;font-size:14px;}
+.orange{color:#f97316;text-decoration:underline;}
+ul{margin:5px 0;padding-left:18px;}
+</style>
+</head><body>
+<div class="logo"><img src="logo.png"></div>
+<h1>Calculadora de Facing</h1>
+<div class="container">
+<form id="f">
+<label>Góndola Primaria</label><div class="sub">Cantidad de frentes</div>
+<input type=number id=gp_n placeholder="Nuestros">
+<input type=number id=gp_c placeholder="Competencia">
+
+<label>Puertas de Frío</label><div class="sub">Únicamente cantidad de puertas</div>
+<input type=number id=pf_n placeholder="Nuestras">
+<input type=number id=pf_c placeholder="Competencia">
+
+<label>Punteras</label><div class="sub">Únicamente cantidad</div>
+<input type=number id=pt_n placeholder="Nuestras">
+<input type=number id=pt_c placeholder="Competencia">
+
+<label>Adicionales</label><div class="sub">Únicamente cantidad</div>
+<input type=number id=ad_n placeholder="Nuestras">
+<input type=number id=ad_c placeholder="Competencia">
+
+<label>Frío Blanco</label><div class="sub">Cantidad de frentes</div>
+<input type=number id=fb_n placeholder="Nuestros">
+<input type=number id=fb_c placeholder="Competencia">
+
+<button type=button class="calc" onclick="calc()">Calcular</button>
+<button type=button class="reset" onclick="rst()">Borrar</button>
+</form>
+<div id="res" class="result"></div>
+</div>
+<script>
+function v(id){return parseInt(document.getElementById(id).value)||0;}
+function calc(){
+let gpN=v('gp_n'),gpC=v('gp_c'),pfN=v('pf_n'),pfC=v('pf_c'),ptN=v('pt_n'),ptC=v('pt_c'),adN=v('ad_n'),adC=v('ad_c'),fbN=v('fb_n'),fbC=v('fb_c');
+let eqN=gpN + pfN*32 + ptN*50 + adN*18 + fbN;
+let eqC=gpC + pfC*32 + ptC*50 + adC*18 + fbC;
+let tot=eqN+eqC, pct=tot? (eqN/tot*100):0;
+let t=`📊 Facing total: ${pct.toFixed(1)}% (Nuestros: ${eqN} / Total: ${tot})<br>`;
+if(pct<40){
+ let miss=Math.ceil((0.4*tot)-eqN);
+ if(miss<0) miss=0;
+ t+=`➕ Faltan ${miss} frentes equivalentes para llegar al 40%.<br>`;
+ t+=`<span class='orange'>CONQUISTÁ algunas de las siguientes opciones:</span><br>`;
+ t+=`• ${Math.ceil(miss/18)} adicional(es) (18 c/u)<br>`;
+ t+=`• ${miss} frentes de frío blanco`;
+}else{
+ t+=`✅ ¡Objetivo 40% alcanzado o superado!`;
+}
+document.getElementById('res').innerHTML=t;
+}
+function rst(){document.getElementById('f').reset();document.getElementById('res').innerHTML='';}
+</script>
+</body></html>
